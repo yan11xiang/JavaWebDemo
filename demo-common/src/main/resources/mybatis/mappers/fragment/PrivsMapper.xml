@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbrothercoder.demo.common.dao.mapper.fragment.PrivsMapper">
+
+  <sql id="andOperatorId">
+    <if test="operatorId != null">
+      AND operator_id = #{operatorId}
+    </if>
+  </sql>
+
+  <sql id="andUserId">
+    <if test="userId != null">
+      AND user_id = #{userId}
+    </if>
+  </sql>
+
+  <sql id="andStores">
+    <if test="stores != null and stores.size != 0">
+        AND data_store IN <foreach collection="stores" open="(" close=")" separator="," item="item">#{item}</foreach>
+    </if>
+  </sql>
+
+  <sql id="andDomains">
+    <if test="domains != null and domains.size != 0">
+        AND data_domain IN <foreach collection="domains" open="(" close=")" separator="," item="item">#{item}</foreach>
+    </if>
+  </sql>
+
+</mapper>

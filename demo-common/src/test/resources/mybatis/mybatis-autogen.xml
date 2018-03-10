@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+
+    <properties resource="mybatis/mybatis-autogen.cnf"/>
+
+    <!-- !!!! Driver Class Path !!!! -->
+    <!--<classPathEntry location="/home/trydofor/.m2/repository/mysql/mysql-connector-java/5.1.20/mysql-connector-java-5.1.20.jar"/>-->
+
+    <context id="context" targetRuntime="MyBatis3">
+
+        <plugin type="com.cbrothercoder.common.mybatis.plugins.JiayuCommonDaoPlugin">
+            <property name="rootInterface" value="com.cbrothercoder.common.dao.CommonDao"/>
+            <property name="rootClass" value="com.cbrothercoder.common.dao.CommonPo"/>
+            <property name="rootClassIgnore" value="
+                tx_division
+                tx_enum_code
+                tx_fake_receiver
+                tx_related_parcel
+                tx_sequence
+                tx_suggest_parcel_item
+                tx_take_yunda_relation
+                tx_trknum_rule
+                tx_permit
+            "/>
+        </plugin>
+
+        <commentGenerator>
+            <property name="suppressAllComments" value="false"/>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+
+        <!-- !!!! Database Configurations !!!! -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="${jdbc.url}"
+                        userId="${jdbc.user}"
+                        password="${jdbc.pass}"/>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- !!!! Model Configurations !!!! -->
+        <javaModelGenerator
+                targetPackage="${po.package}"
+                targetProject="${po.project}">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- !!!! Mapper XML Configurations !!!! -->
+        <sqlMapGenerator
+                targetPackage="${mapper.package}"
+                targetProject="${mapper.project}">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- !!!! Mapper Interface Configurations !!!! -->
+        <javaClientGenerator
+                targetPackage="${dao.package}"
+                targetProject="${dao.project}"
+                type="XMLMAPPER">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!-- !!!! Table Configurations !!!! -->
+
+        <!--<table tableName="%"-->
+        <table tableName="${table.name}"
+               enableDeleteByPrimaryKey="false"
+               enableUpdateByPrimaryKey="true"
+               enableInsert="true"
+               enableSelectByPrimaryKey="true"
+               enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false"
+        />
+
+    </context>
+</generatorConfiguration>

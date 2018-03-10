@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbrothercoder.demo.common.dao.mapper.manual.sequence.SequenceDao">
+    <select id="selectForUpdate" parameterType="string" resultType="long">
+        select
+          id
+        from tx_sequence
+          where
+        table_name = #{tableName}
+          for update
+    </select>
+
+    <update id="updateIncrease" parameterType="string">
+        update tx_sequence
+        set
+          id = id + 1
+        where
+          table_name = #{tableName}
+    </update>
+</mapper>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd"
+       default-autowire="byName">
+
+    <context:component-scan base-package="com.cbrothercoder.demo.common"/>
+
+    <context:annotation-config/>
+    <context:annotation-config/>
+    <bean id="propertySourcesPlaceholderConfigurer" class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+        <property name="environment">
+            <bean class="org.springframework.web.context.support.StandardServletEnvironment"/>
+        </property>
+        <property name="locations">
+            <list>
+                <value>classpath*:/config/common-*.properties</value>
+            </list>
+        </property>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+    </bean>
+
+    <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="${com.cbrothercoder.demo.jdbc.url}"/>
+        <property name="username" value="${com.cbrothercoder.demo.jdbc.user}"/>
+        <property name="password" value="${com.cbrothercoder.demo.jdbc.pass}"/>
+        <property name="idleConnectionTestPeriodInMinutes" value="1"/>
+        <property name="idleMaxAgeInMinutes" value="30"/>
+        <property name="maxConnectionsPerPartition" value="30"/>
+        <property name="minConnectionsPerPartition" value="5"/>
+        <property name="partitionCount" value="2"/>
+        <property name="acquireIncrement" value="1"/>
+        <property name="statementsCacheSize" value="50"/>
+        <property name="connectionTestStatement" value="select 1 from dual"/>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:/mybatis/mybatis-config.xml"/>
+        <property name="mapperLocations" value="classpath:/mybatis/mappers/fragment/PrivsMapper.xml"/>
+    </bean>
+
+    <bean id="mapperScannerConfigurer" class="com.cbrothercoder.demo.common.dao.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.cbrothercoder.demo.common.dao.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <!-- 最大空闲时间，超过此时间连接自动释放 0 默认不限制-->
+        <property name="maxIdle" value="${redis.pool.maxIdle}"/>
+        <!-- 最大连接数 0 默认不限制-->
+        <property name="maxTotal" value="${redis.pool.maxActive}"/>
+        <!-- 最大连接等待时间 -1 默认无限制-->
+        <property name="maxWaitMillis" value="${redis.pool.maxWait}"/>
+    </bean>
+
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+        <!--<constructor-arg index="0" ref="jedisPoolConfig"/>-->
+        <constructor-arg index="0" value="${com.cbrothercoder.demo.redis.hostname}"/>
+        <constructor-arg index="1" value="${com.cbrothercoder.demo.redis.port}"/>
+        <!--<constructor-arg index="3" value="60000" type="int"/>-->
+        <!--<constructor-arg index="4" value="${com.cbrothercoder.demo.redis.password}"/>-->
+        <!--<constructor-arg index="5" value="0"/>-->
+    </bean>
+</beans>

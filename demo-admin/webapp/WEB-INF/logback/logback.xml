@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="false">
+
+    <!--appender-->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ADMIN" class="org.summercool.web.util.AsyncRollingFileAppender">
+        <File>${com.cbrothercoder.demo.admin.log.path}/${com.cbrothercoder.demo.admin.log.name}.log</File>
+        <Append>true</Append>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${com.cbrothercoder.demo.admin.log.path}/${com.cbrothercoder.demo.admin.log.name}.%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="ADMIN-ERROR" class="org.summercool.web.util.AsyncRollingFileAppender">
+        <File>${com.cbrothercoder.demo.admin.log.path}/${com.cbrothercoder.demo.admin.log.name}-error.log</File>
+        <Append>true</Append>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${com.cbrothercoder.demo.admin.log.path}/${com.cbrothercoder.demo.admin.log.name}-error.%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- logger -->
+    <logger name="com.cbrothercoder" level="${com.cbrothercoder.demo.admin.log.level.service}"/>
+    <logger name="com.cbrothercoder.takeex.template.dao" level="${com.cbrothercoder.demo.admin.log.level.dao}"/>
+    <logger name="org.mybatis" level="${com.cbrothercoder.demo.admin.log.level.mybatis}"/>
+    <logger name="org.thymeleaf" level="${com.cbrothercoder.demo.admin.log.level.thymeleaf}"/>
+    <logger name="org.eclipse.jetty" level="${com.cbrothercoder.demo.admin.log.level.jetty}"/>
+
+    <!-- root -->
+    <root level="${com.cbrothercoder.demo.admin.log.level.root}">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ADMIN"/>
+        <appender-ref ref="ADMIN-ERROR"/>
+    </root>
+
+</configuration>

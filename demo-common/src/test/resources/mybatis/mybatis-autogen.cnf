@@ -1,0 +1,14 @@
+jdbc.url=jdbc:mysql://localhost:3306/takeex_v2
+jdbc.user=root
+jdbc.pass=moilioncircle
+
+po.package=com.cbrothercoder.demo.common.dao.po.autogen
+po.project=demo-common/src/main/java/
+
+mapper.package=mybatis.mappers.autogen
+mapper.project=demo-common/src/main/resources/
+
+dao.package=com.cbrothercoder.demo.common.dao.mapper.autogen
+dao.project=demo-common/src/main/java/
+
+table.name=tx_sequence

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd"
+       default-autowire="byName">
+
+    <!-- 事务配置 -->
+    <bean name="mainTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- advice -->
+    <tx:advice id="notSupportedAdvice" transaction-manager="mainTransactionManager">
+        <tx:attributes>
+            <tx:method name="*" propagation="NOT_SUPPORTED"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <tx:advice id="supportsAdvice" transaction-manager="mainTransactionManager">
+        <tx:attributes>
+            <tx:method name="*" propagation="SUPPORTS"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <tx:advice id="requiresNewAdvice" transaction-manager="mainTransactionManager">
+        <tx:attributes>
+            <tx:method name="*" propagation="REQUIRES_NEW"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <tx:advice id="requiredAdvice" transaction-manager="mainTransactionManager">
+        <tx:attributes>
+            <tx:method name="*" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!-- AOP配置 -->
+    <aop:config>
+
+        <!-- pointcut -->
+        <aop:pointcut id="sequenceServicePointcut" expression="
+            execution(* com.cbrothercoder.demo.common.service.sequence.SequenceService.*(..))
+        "/>
+
+        <!-- advisor -->
+        <aop:advisor advice-ref="requiresNewAdvice" pointcut-ref="sequenceServicePointcut"/>
+
+    </aop:config>
+
+</beans>
