@@ -30,3 +30,4 @@ classes
 
 # mac os #
 .DS_Store
+/nexus/
