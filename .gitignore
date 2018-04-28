@@ -31,3 +31,4 @@ classes
 # mac os #
 .DS_Store
 /nexus/
+/build/demo-admin/
